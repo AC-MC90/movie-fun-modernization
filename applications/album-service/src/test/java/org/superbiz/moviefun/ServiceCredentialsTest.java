@@ -1,9 +1,8 @@
 package org.superbiz.moviefun;
 
+import org.hamcrest.core.IsEqual;
+import org.junit.Assert;
 import org.junit.Test;
-
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.*;
 
 public class ServiceCredentialsTest {
     @Test
@@ -67,7 +66,7 @@ public class ServiceCredentialsTest {
 
         String accessKeyId = serviceCredentials.getCredential("moviefun-s3", "access_key_id");
 
-        assertThat(accessKeyId, equalTo("asdfasdf"));
+        Assert.assertThat(accessKeyId, IsEqual.equalTo("asdfasdf"));
 
     }
 }
