@@ -15,27 +15,27 @@ public class MoviesController {
     }
 
     @GetMapping("/{id}")
-    public Movie find(Long id) {
+    public Movie find(@PathVariable("id") Long id) {
         return moviesRepository.find(id);
     }
 
     @PostMapping
-    public void addMovie(Movie movie) {
+    public void addMovie(@RequestBody Movie movie) {
         moviesRepository.addMovie(movie);
     }
 
     @PutMapping
-    public void updateMovie(Movie movie) {
+    public void updateMovie(@RequestBody Movie movie) {
         moviesRepository.updateMovie(movie);
     }
 
     @DeleteMapping("/movie")
-    public void deleteMovie(Movie movie) {
+    public void deleteMovie(@RequestBody Movie movie) {
         moviesRepository.deleteMovie(movie);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteMovieId(long id) {
+    public void deleteMovieId(@PathVariable("id") long id) {
         moviesRepository.deleteMovieId(id);
     }
 

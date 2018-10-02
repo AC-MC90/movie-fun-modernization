@@ -1,22 +1,15 @@
-package org.superbiz.moviefun.albums;
+package org.superbiz.moviefun.blobstore;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3Client;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.superbiz.moviefun.ServiceCredentials;
-import org.superbiz.moviefun.blobstore.BlobStore;
-import org.superbiz.moviefun.blobstore.S3Store;
 
-@SpringBootApplication
-public class AlbumServiceApplication {
-
-    public static void main(String... args) {
-        SpringApplication.run(AlbumServiceApplication.class, args);
-    }
+@Configuration
+public class BlobStoreConfiguration {
 
     @Bean
     ServiceCredentials serviceCredentials(@Value("${vcap.services}") String vcapServices) {

@@ -10,6 +10,8 @@ public class MovieInfo {
     private String genre;
     private int rating;
 
+    public MovieInfo(){}
+
     public MovieInfo(String title, String director, String genre, int rating, int year) {
         this.director = director;
         this.title = title;

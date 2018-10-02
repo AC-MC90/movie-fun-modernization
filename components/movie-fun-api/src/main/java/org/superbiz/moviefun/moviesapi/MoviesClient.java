@@ -19,7 +19,7 @@ public class MoviesClient {
     }
 
     public MovieInfo find(Long id) {
-        return restOperations.getForObject(moviesUrl+"{id}",MovieInfo.class,id);
+        return restOperations.getForObject(moviesUrl+"/{id}",MovieInfo.class,id);
     }
 
     public void addMovie(MovieInfo movie) {
@@ -35,7 +35,7 @@ public class MoviesClient {
     }
 
     public void deleteMovieId(long id) {
-        restOperations.delete(moviesUrl+"{id}",id);
+        restOperations.delete(moviesUrl+"/{id}",id);
     }
 
     public List<MovieInfo> getMovies() {

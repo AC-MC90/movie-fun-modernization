@@ -9,6 +9,8 @@ public class AlbumInfo {
     private int year;
     private int rating;
 
+    public AlbumInfo(){}
+
     public AlbumInfo(String artist, String title, int year, int rating) {
         this.artist = artist;
         this.title = title;
@@ -43,16 +45,16 @@ public class AlbumInfo {
 
         AlbumInfo albumInfo = (AlbumInfo) o;
 
+        if (id != albumInfo.id) return false;
         if (year != albumInfo.year) return false;
         if (rating != albumInfo.rating) return false;
-        if (id != null ? !id.equals(albumInfo.id) : albumInfo.id != null) return false;
         if (artist != null ? !artist.equals(albumInfo.artist) : albumInfo.artist != null) return false;
         return title != null ? title.equals(albumInfo.title) : albumInfo.title == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (artist != null ? artist.hashCode() : 0);
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + year;

@@ -15,12 +15,12 @@ public class AlbumsController {
     }
 
     @PostMapping
-    public void addAlbum(Album album) {
+    public void addAlbum(@RequestBody Album album) {
         albumsRepository.addAlbum(album);
     }
 
     @GetMapping("/{id}")
-    public Album find(long id) {
+    public Album find(@PathVariable("id") long id) {
         return albumsRepository.find(id);
     }
 
@@ -30,12 +30,12 @@ public class AlbumsController {
     }
 
     @DeleteMapping
-    public void deleteAlbum(Album album) {
+    public void deleteAlbum(@RequestBody Album album) {
         albumsRepository.deleteAlbum(album);
     }
 
     @PutMapping
-    public void updateAlbum(Album album) {
+    public void updateAlbum(@RequestBody Album album) {
         albumsRepository.updateAlbum(album);
     }
 }
