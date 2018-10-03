@@ -25,7 +25,7 @@ public class S3Store implements BlobStore {
 
     @Override
     public void put(Blob blob) throws IOException {
-        s3.putObject(bucketName, blob.name, blob.inputStream, new ObjectMetadata());
+        s3.putObject(bucketName, blob.name, new ByteArrayInputStream(blob.content), new ObjectMetadata());
     }
 
     @Override
@@ -41,7 +41,7 @@ public class S3Store implements BlobStore {
 
         return Optional.of(new Blob(
             name,
-            new ByteArrayInputStream(bytes),
+            bytes,
             tika.detect(bytes)
         ));
     }

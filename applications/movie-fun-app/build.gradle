@@ -20,6 +20,7 @@ dependencies {
     compile "org.apache.geronimo.specs:geronimo-osgi-locator:1.1"
     compile "org.apache.geronimo.components:geronimo-jaspi:2.0.0"
     compile "org.apache.tomee:javaee-api:7.0"
+    compile "commons-io:commons-io:2.6"
 
     testCompile "junit:junit:$junitVersion"
 }

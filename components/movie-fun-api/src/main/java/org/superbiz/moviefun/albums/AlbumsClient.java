@@ -1,7 +1,12 @@
 package org.superbiz.moviefun.albums;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.RestOperations;
+import org.springframework.web.util.UriUtils;
+import org.superbiz.moviefun.BlobInfo;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 public class AlbumsClient {
@@ -32,5 +37,13 @@ public class AlbumsClient {
 
     public void updateAlbum(AlbumInfo album) {
         restOperations.put(albumsUrl, album);
+    }
+
+    public BlobInfo getCover(@PathVariable String blobId) throws Exception {
+        return restOperations.getForObject(albumsUrl + "/{blobId}/cover", BlobInfo.class, UriUtils.encodePath(blobId,"UTF-8"));
+    }
+
+    public void uploadCover(@PathVariable String blobId, BlobInfo blob) throws Exception{
+        restOperations.postForObject(albumsUrl + "/{blobId}/cover", blob, Void.class, UriUtils.encodePath(blobId,"UTF-8"));
     }
 }

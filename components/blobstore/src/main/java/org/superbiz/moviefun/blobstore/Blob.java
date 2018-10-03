@@ -3,13 +3,15 @@ package org.superbiz.moviefun.blobstore;
 import java.io.InputStream;
 
 public class Blob {
-    public final String name;
-    public final InputStream inputStream;
-    public final String contentType;
+    public String name;
+    public byte[] content;
+    public String contentType;
 
-    public Blob(String name, InputStream inputStream, String contentType) {
+    public Blob(){}
+
+    public Blob(String name, byte[] content, String contentType) {
         this.name = name;
-        this.inputStream = inputStream;
+        this.content = content;
         this.contentType = contentType;
     }
 }
