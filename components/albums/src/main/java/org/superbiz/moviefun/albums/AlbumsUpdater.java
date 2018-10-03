@@ -7,8 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.superbiz.moviefun.CsvUtils;
-import org.superbiz.moviefun.blobstore.Blob;
-import org.superbiz.moviefun.blobstore.BlobStore;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -24,11 +22,11 @@ public class AlbumsUpdater {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final ObjectReader objectReader;
-    private final BlobStore blobStore;
+    private final BlobStoreClient blobStoreClient;
     private final AlbumsRepository albumsRepository;
 
-    public AlbumsUpdater(BlobStore blobStore, AlbumsRepository albumsRepository) {
-        this.blobStore = blobStore;
+    public AlbumsUpdater(BlobStoreClient blobStoreClient, AlbumsRepository albumsRepository) {
+        this.blobStoreClient = blobStoreClient;
         this.albumsRepository = albumsRepository;
 
         CsvSchema schema = builder()
@@ -42,14 +40,14 @@ public class AlbumsUpdater {
     }
 
     public void update() throws IOException {
-        Optional<Blob> maybeBlob = blobStore.get("albums.csv");
+        Optional<BlobInfo> maybeBlob = blobStoreClient.get("albums.csv");
 
         if (!maybeBlob.isPresent()) {
             logger.info("No albums.csv found when running AlbumsUpdater!");
             return;
         }
 
-        List<Album> albumsToHave = CsvUtils.readFromCsv(objectReader, new ByteArrayInputStream(maybeBlob.get().content));
+        List<Album> albumsToHave = CsvUtils.readFromCsv(objectReader, new ByteArrayInputStream(maybeBlob.get().getContent()));
         List<Album> albumsWeHave = albumsRepository.getAlbums();
 
         createNewAlbums(albumsToHave, albumsWeHave);

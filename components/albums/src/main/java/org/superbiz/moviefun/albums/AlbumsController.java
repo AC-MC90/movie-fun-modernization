@@ -3,21 +3,14 @@ package org.superbiz.moviefun.albums;
 import org.apache.tika.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.superbiz.moviefun.blobstore.Blob;
-import org.superbiz.moviefun.blobstore.BlobStore;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-
-import static java.lang.String.format;
 
 @RestController
 @RequestMapping("/albums")
@@ -26,12 +19,12 @@ public class AlbumsController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final AlbumsRepository albumsRepository;
-    private final BlobStore blobStore;
+    private final BlobStoreClient blobStoreClient;
     
     public AlbumsController(AlbumsRepository albumsRepository,
-                            BlobStore blobStore) {
+                            BlobStoreClient blobStoreClient) {
         this.albumsRepository = albumsRepository;
-        this.blobStore = blobStore;
+        this.blobStoreClient = blobStoreClient;
     }
 
     @PostMapping
@@ -60,28 +53,28 @@ public class AlbumsController {
     }
 
     @GetMapping("/{blobId}/cover")
-    public Blob getCover(@PathVariable String blobId) throws IOException, URISyntaxException {
-        Optional<Blob> maybeCoverBlob = blobStore.get(blobId);
-        Blob coverBlob = maybeCoverBlob.orElseGet(this::buildDefaultCoverBlob);
+    public BlobInfo getCover(@PathVariable String blobId) throws IOException, URISyntaxException {
+        Optional<BlobInfo> maybeCoverBlob = blobStoreClient.get(blobId);
+        BlobInfo coverBlob = maybeCoverBlob.orElseGet(this::buildDefaultCoverBlob);
 
         return coverBlob;
     }
 
     @PostMapping("/{blobId}/cover")
-    public void uploadCover(@PathVariable String blobId, @RequestBody Blob blob) {
+    public void uploadCover(@PathVariable String blobId, @RequestBody BlobInfo blob) {
         logger.debug("Uploading cover for album with id {}", blobId);
         try {
-            blobStore.put(blob);
+            blobStoreClient.put(blob);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private Blob buildDefaultCoverBlob() {
+    private BlobInfo buildDefaultCoverBlob() {
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream input = classLoader.getResourceAsStream("default-cover.jpg");
         try {
-            return new Blob("default-cover", IOUtils.toByteArray(input), MediaType.IMAGE_JPEG_VALUE);
+            return new BlobInfo("default-cover", IOUtils.toByteArray(input), MediaType.IMAGE_JPEG_VALUE);
         }catch (IOException ioEX){
             //Ignore (bad idea, but this is a lab so whatever)
             return null;

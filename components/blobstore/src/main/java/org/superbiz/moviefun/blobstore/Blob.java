@@ -14,4 +14,16 @@ public class Blob {
         this.content = content;
         this.contentType = contentType;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public byte[] getContent() {
+        return content;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
 }
